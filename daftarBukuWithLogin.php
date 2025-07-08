@@ -7,16 +7,15 @@ if (!isset($_SESSION['username'])) {
     header("Location: Login.php");
     exit();
 }
-// REMOVE THIS LINE: echo "user:" . $_SESSION['username'] . "<br>";
-$levelUser = $_SESSION['levelUser'];
+$levelUser = $_SESSION['levelUser']; // Mendapatkan level pengguna dari sesi
 // Koneksi ke database
-include "koneksi.php";
-// Query join tabel pegawai dan jabatan
+include "koneksi.php"; // Mengimpor konfigurasi koneksi database
+// Query join tabel buku dan kategori
 $sql = "SELECT buku.id_buku, buku.judul, buku.penulis, kategori.nama_kategori
         FROM buku
         INNER JOIN kategori ON buku.id_kategori = kategori.id_kategori
-        ORDER BY buku.id_buku DESC";
-$hasil = $koneksi->query($sql);
+        ORDER BY buku.id_buku DESC"; // Query untuk mengambil data buku beserta nama kategori
+$hasil = $koneksi->query($sql); // Menjalankan query ke database
 ?>
 <!DOCTYPE html>
 <html>
@@ -137,7 +136,9 @@ $hasil = $koneksi->query($sql);
                 <th>Judul</th>
                 <th>Penulis</th>
                 <th>Kategori</th>
-                <th colspan="2">Aksi</th>
+                <?php if ($levelUser == 1 || $levelUser == 2) { // Tampilkan header Aksi hanya untuk Admin dan Staf ?>
+                    <th colspan="2">Aksi</th>
+                <?php } ?>
             </tr>
         </thead>
         <tbody>
@@ -148,11 +149,11 @@ $hasil = $koneksi->query($sql);
                         <td><?= $row['judul'] ?></td>
                         <td><?= $row['penulis'] ?></td>
                         <td><?= $row['nama_kategori'] ?></td>
-                        <?php if ($levelUser == 1) { ?>
+                        <?php if ($levelUser == 1) { // Hanya Admin yang bisa Hapus ?>
                             <td><a href="hapusBuku.php?id_hapus=<?php echo
                                 $row['id_buku']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="action-button delete-button">Hapus</a></td>
                         <?php } ?>
-                        <?php if ($levelUser == 1 || $levelUser == 2) { ?>
+                        <?php if ($levelUser == 1 || $levelUser == 2) { // Admin dan Staf bisa Edit ?>
                             <td><a href="editBuku.php?id_edit=<?php echo
                                 $row['id_buku']; ?>" onclick="return confirm('Apakah Anda mau edit record ini ?')" class="action-button edit-button">Edit</a></td>
                         <?php } ?>
@@ -160,7 +161,7 @@ $hasil = $koneksi->query($sql);
                 <?php }
             } else { ?>
                 <tr>
-                    <td colspan="6">Tidak ada data</td>
+                    <td colspan="<?php echo ($levelUser == 1 || $levelUser == 2) ? '6' : '4'; ?>">Tidak ada data</td>
                 </tr>
             <?php } ?>
         </tbody>
