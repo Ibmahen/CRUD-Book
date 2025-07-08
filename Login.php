@@ -1,36 +1,27 @@
 <?php
 session_start();
-$error = "";
-// Jika sudah login, langsung redirect ke dashboard
-if (isset($_SESSION['username'])) {
-    header("Location: daftarBukuWithLogin.php");
-    exit();
-}
-// Proses form login
+
+// Proses login jika form disubmit
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    // Contoh validasi sederhana (user: admin, password: 123)
-    // pada implementasi riil username dan password dari database
 
-    if ($username == "admin" && $password == "123") {
+    // Ganti dengan username dan password yang kamu inginkan
+    if ($username === 'admin' && $password === '123') {
         $_SESSION['username'] = $username;
-        $_SESSION['levelUser'] = 1;
+        $_SESSION['levelUser'] = 1; // Contoh level user admin
+
+        // Redirect ke halaman daftar buku
         header("Location: daftarBukuWithLogin.php");
         exit();
-    } elseif ($username == "staf" && $password == "456") {
+    } elseif ($username === 'staf' && $password === '456') {
         $_SESSION['username'] = $username;
-        $_SESSION['levelUser'] = 2;
-        header("Location: daftarBukuWithLogin.php");
-        exit();
-    } elseif ($username == "tamu" && $password == "tamu") {
-        $_SESSION['username'] = $username;
-        $_SESSION['levelUser'] = 3;
+        $_SESSION['levelUser'] = 2; // Contoh level user staf
+
         header("Location: daftarBukuWithLogin.php");
         exit();
     } else {
-        $error = "Nama pengguna atau kata sandi salah.";
-
+        $error = "Username atau password salah!";
     }
 }
 ?>
@@ -108,20 +99,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <?php if (!empty($error))
-            echo "<p class='error'>$error</p>"; ?>
-        <form method="POST" action="login.php">
-            <label for="username">Nama User:</label>
-            <input type="text" name="username" id="username" required>
+    <h2>Login</h2>
+    <?php if (isset($error))
+        echo "<p style='color:red;'>$error</p>"; ?>
+    <form method="POST" action="">
+        <label>Username:</label><br>
+        <input type="text" name="username" required><br><br>
 
-            <label for="password">Kata Sandi:</label>
-            <input type="password" name="password" id="password" required>
+        <label>Password:</label><br>
+        <input type="password" name="password" required><br><br>
 
-            <input type="submit" value="Masuk">
-        </form>
-    </div>
+        <button type="submit">Login</button>
+    </form>
 </body>
 
 </html>
