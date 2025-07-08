@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) {
     header("Location: Login.php");
     exit();
 }
-echo "user:" . $_SESSION['username'] . "<br>";
+// REMOVE THIS LINE: echo "user:" . $_SESSION['username'] . "<br>";
 $levelUser = $_SESSION['levelUser'];
 // Koneksi ke database
 include "koneksi.php";
@@ -93,6 +93,34 @@ $hasil = $koneksi->query($sql);
             font-size: 1.1em;
             color: #555;
         }
+
+        /* Styles for action buttons */
+        .action-button {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: white;
+            font-size: 0.9em;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-button {
+            background-color: #dc3545; /* Red */
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        .edit-button {
+            background-color: #28a745; /* Green */
+        }
+        .edit-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 
@@ -122,11 +150,11 @@ $hasil = $koneksi->query($sql);
                         <td><?= $row['nama_kategori'] ?></td>
                         <?php if ($levelUser == 1) { ?>
                             <td><a href="hapusBuku.php?id_hapus=<?php echo
-                                $row['id_buku']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</a></td>
+                                $row['id_buku']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="action-button delete-button">Hapus</a></td>
                         <?php } ?>
                         <?php if ($levelUser == 1 || $levelUser == 2) { ?>
                             <td><a href="editBuku.php?id_edit=<?php echo
-                                $row['id_buku']; ?>" onclick="return confirm('Apakah Anda mau edit record ini ?')">Edit</a></td>
+                                $row['id_buku']; ?>" onclick="return confirm('Apakah Anda mau edit record ini ?')" class="action-button edit-button">Edit</a></td>
                         <?php } ?>
                     </tr>
                 <?php }

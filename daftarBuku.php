@@ -64,6 +64,35 @@ $hasil = $koneksi->query($sql);
         .add-button:hover {
             background-color: #218838;
         }
+
+        /* Styles for action buttons */
+        .action-button {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: white;
+            font-size: 0.9em;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-button {
+            background-color: #dc3545; /* Red */
+            margin-right: 5px; /* Add some spacing between buttons */
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        .edit-button {
+            background-color: #28a745; /* Green */
+        }
+        .edit-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 
@@ -88,9 +117,9 @@ $hasil = $koneksi->query($sql);
                     <td><?= $row['penulis'] ?></td>
                     <td><?= $row['nama_kategori'] ?></td>
                     <td>
-                        <a href="editBuku.php?id_edit=<?= $row['id_buku'] ?>">Edit</a> |
+                        <a href="editBuku.php?id_edit=<?= $row['id_buku'] ?>" class="action-button edit-button">Edit</a>
                         <a href="hapusBuku.php?id_hapus=<?= $row['id_buku'] ?>"
-                            onclick="return confirm('Yakin mau hapus?')">Hapus</a>
+                            onclick="return confirm('Yakin mau hapus?')" class="action-button delete-button">Hapus</a>
                     </td>
                 </tr>
             <?php } ?>
