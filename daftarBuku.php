@@ -52,53 +52,25 @@ $hasil = $koneksi->query($sql);
         a:hover {
             text-decoration: underline;
         }
-        .add-button {
+        .login-button {
             display: inline-block;
-            background-color: #28a745;
+            background-color: #007bff;
             color: white;
             padding: 10px 15px;
             border-radius: 5px;
             text-decoration: none;
             margin-bottom: 20px;
+            float: right; /* Untuk memposisikan di kanan */
         }
-        .add-button:hover {
-            background-color: #218838;
-        }
-
-        /* Styles for action buttons */
-        .action-button {
-            display: inline-block;
-            padding: 8px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: white;
-            font-size: 0.9em;
-            text-align: center;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .delete-button {
-            background-color: #dc3545; /* Red */
-            margin-right: 5px; /* Add some spacing between buttons */
-        }
-        .delete-button:hover {
-            background-color: #c82333;
-        }
-
-        .edit-button {
-            background-color: #28a745; /* Green */
-        }
-        .edit-button:hover {
-            background-color: #218838;
+        .login-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 
 <body>
+    <a href="Login.php" class="login-button">Login</a>
     <h2>Daftar Buku</h2>
-    <a href="formTambahBuku.php" class="add-button">Tambah Buku</a>
     <table>
         <thead>
             <tr>
@@ -106,21 +78,21 @@ $hasil = $koneksi->query($sql);
                 <th>Judul</th>
                 <th>Penulis</th>
                 <th>Kategori</th>
-                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            <?php while ($row = $hasil->fetch_assoc()) { ?>
+            <?php if ($hasil->num_rows > 0) {
+                while ($row = $hasil->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?= $row['id_buku'] ?></td>
+                        <td><?= $row['judul'] ?></td>
+                        <td><?= $row['penulis'] ?></td>
+                        <td><?= $row['nama_kategori'] ?></td>
+                    </tr>
+                <?php }
+            } else { ?>
                 <tr>
-                    <td><?= $row['id_buku'] ?></td>
-                    <td><?= $row['judul'] ?></td>
-                    <td><?= $row['penulis'] ?></td>
-                    <td><?= $row['nama_kategori'] ?></td>
-                    <td>
-                        <a href="editBuku.php?id_edit=<?= $row['id_buku'] ?>" class="action-button edit-button">Edit</a>
-                        <a href="hapusBuku.php?id_hapus=<?= $row['id_buku'] ?>"
-                            onclick="return confirm('Yakin mau hapus?')" class="action-button delete-button">Hapus</a>
-                    </td>
+                    <td colspan="4">Tidak ada data</td>
                 </tr>
             <?php } ?>
         </tbody>
@@ -128,3 +100,6 @@ $hasil = $koneksi->query($sql);
 </body>
 
 </html>
+<?php
+$koneksi->close();
+?>

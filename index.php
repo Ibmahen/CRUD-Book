@@ -1,5 +1,5 @@
 <?php
 // Redirect to the Login page
-header("Location: Login.php");
+header("Location: daftarBuku.php");
 exit();
 ?>
